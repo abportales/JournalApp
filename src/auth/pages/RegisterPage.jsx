@@ -1,9 +1,9 @@
 import { Link as RouterLink } from 'react-router-dom'
-import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { startCreatingUserWithEmailPassword } from '../../store/auth/thunks'
 
 
@@ -27,6 +27,11 @@ export const RegisterPage = () => {
 
   const dispatch = useDispatch();
   const [formSubmitted, setFormSubmitted] = useState(false);
+
+  // control de errores de la respuesta de firebase
+  const { status, errorMessage } = useSelector(state => state.auth)
+  //validamos de nuevo que el usuario no pueda dar clic cuando estamos validando la autentificación
+  const isCheckingAuthentication = useMemo(() => status === 'checking', [status]);
 
   const {
     displayName, email, password, onInputChange, formState,
@@ -92,8 +97,17 @@ export const RegisterPage = () => {
         </Grid>
 
         <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+          <Grid 
+            display={ !!errorMessage ? '': 'none'} //errorMessage, es nulo, con doble negación se hace booleano.
+            item 
+            xs={12}>
+            <Alert severity='error'>
+              {errorMessage}
+            </Alert>
+          </Grid>
           <Grid item xs={12}>
             <Button
+              disabled={isCheckingAuthentication}
               variant='contained'
               fullWidth
               type="submit"

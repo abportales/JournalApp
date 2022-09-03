@@ -2,21 +2,21 @@ import { useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
 
-import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { Google } from '@mui/icons-material'
 
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
-import { checkingAuthentication, startGoogleSignIn } from '../../store/auth'
+import { checkingAuthentication, startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth'
 
 export const LoginPage = () => {
-  // al parecer se omite porque es el único
-  //pero si queremos obtener una propiedad especifica lo necesitamos
-  const { status } = useSelector(state => state.auth) 
+  // si queremos obtener una propiedad especifica del status declaramos el selector.
+  // control de errores de la respuesta de firebase (errorMessage)
+  const { status, errorMessage } = useSelector(state => state.auth)
   //hacemos esto para controlar el status, si no cambia no hara nada, cuando cambie hara la acción.
   // y lo usaremos en los botones del login y google
   // console.log({status})
-  const isAuthenticating = useMemo( () => status === 'checking', [status] )
+  const isAuthenticating = useMemo(() => status === 'checking', [status])
 
   const dispatch = useDispatch();
 
@@ -30,8 +30,9 @@ export const LoginPage = () => {
   //verificación del email and password
   const onSubmit = (event) => {
     event.preventDefault();
-    dispatch(checkingAuthentication())
     // console.log({ email, password })
+    //hacer dispatch de nuestro thunk (startlogin)
+    dispatch(startLoginWithEmailPassword({ email, password }))
   }
 
   const OnGoogleSignIn = () => {
@@ -79,6 +80,14 @@ export const LoginPage = () => {
         </Grid>
 
         <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+          <Grid
+            item
+            display={!!errorMessage ? '' : 'none'} //errorMessage, es nulo, con doble negación se hace booleano.
+            xs={12}>
+            <Alert severity='error'>
+              {errorMessage}
+            </Alert>
+          </Grid>
           <Grid item xs={12} md={6}>
             <Button
               variant='contained'

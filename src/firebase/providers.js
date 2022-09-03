@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import { FirebaseAuth } from "./config";
 
 //nueva instancia de esta función
@@ -35,15 +35,35 @@ export const signInWithGoogle = async () => {
 export const registerUserWithEmailAndPassword = async ({ email, password, displayName }) => {
     try {
         const resp = await createUserWithEmailAndPassword(FirebaseAuth, email, password);
-        const {uid, photoURL} = resp.user;
+        const { uid, photoURL } = resp.user;
         // console.log(resp)
         // TODO: actualizar el displayName en firebase
+        // promise avoid, una promesa que no regresa nada.
+        await updateProfile(FirebaseAuth.currentUser, { displayName });
+
         return {
             ok: true,
-            uid, photoURL,email, displayName,
+            uid, photoURL, email, displayName,
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
+        // en esta parte llevaría la validación de errores por parte de firebase,
+        return {
+            ok: false,
+            errorMessage: error.message,
+        }
+    }
+}
+
+export const loginWithEmailPassword = async ({ email, password }) => {
+    try {
+        const resp = await signInWithEmailAndPassword(FirebaseAuth, email, password);
+        const { uid, photoURL, displayName } = resp.user;
+        return {
+            ok: true,
+            uid, photoURL, displayName,
+        }
+    } catch (error) {
         return {
             ok: false,
             errorMessage: error.message,

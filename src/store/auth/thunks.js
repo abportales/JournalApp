@@ -1,4 +1,4 @@
-import { registerUserWithEmailAndPassword, signInWithGoogle } from "../../firebase/providers"
+import { loginWithEmailPassword, registerUserWithEmailAndPassword, signInWithGoogle } from "../../firebase/providers"
 import { checkingCredentials, login, logout } from "./authSlice"
 
 export const checkingAuthentication = (email, password) => {
@@ -29,6 +29,30 @@ export const startCreatingUserWithEmailPassword = ({ email, password, displayNam
         dispatch(checkingCredentials());
 
         const resp = await registerUserWithEmailAndPassword({ email, password, displayName })
-        console.log(resp)
+        // console.log(resp)
+        const { ok, uid, photoURL, errorMessage } = resp;
+        // si lo mandamos asi: logout(errorMessage), estamos diciendo que el payload es el errorMessage,
+        // si lo enviamos logout({errorMessage}), es un objeto que tiene un errorMessage, ya depende de la implementación que
+        // querramos.
+        if (!ok) return dispatch(logout({ errorMessage }));
+
+        // si todo sale bien, logeamos al usuario
+        dispatch(login({ uid, displayName, email, photoURL }));
+    }
+}
+
+export const startLoginWithEmailPassword = ({ email, password }) => {
+    // internamente llamara a loginwithEmail
+    return async (dispatch) => {
+
+        dispatch(checkingCredentials());
+
+        const resp = await loginWithEmailPassword({ email, password });
+        const {ok, uid, photoURL, displayName, errorMessage} = resp;
+
+        if (!ok) return dispatch(logout({ errorMessage }));
+
+        // si todo sale bien, logeamos al usuario
+        dispatch(login({ uid, displayName, email, photoURL }));
     }
 }
