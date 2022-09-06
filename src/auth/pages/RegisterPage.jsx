@@ -52,7 +52,8 @@ export const RegisterPage = () => {
   return (
 
     <AuthLayout title='Crear cuenta'>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}
+        className='animate__animated animate__fadeIn animated__faster'>
         {/* grid tambien cuenta con la plantilla de 12 posiciones como bootstrap */}
         <Grid
           container
@@ -97,9 +98,9 @@ export const RegisterPage = () => {
         </Grid>
 
         <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-          <Grid 
-            display={ !!errorMessage ? '': 'none'} //errorMessage, es nulo, con doble negación se hace booleano.
-            item 
+          <Grid
+            display={!!errorMessage ? '' : 'none'} //errorMessage, es nulo, con doble negación se hace booleano.
+            item
             xs={12}>
             <Alert severity='error'>
               {errorMessage}

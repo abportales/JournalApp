@@ -5,7 +5,9 @@ import { ImageGallery } from "./ImageGallery"
 export const NoteView = () => {
     return (
         // el grid deja mas margen de modificacion y estilos que un box
-        <Grid container
+        <Grid
+            className='animate__animated animate__fadeIn animated__faster'
+            container
             direction='row'
             justifyContent='space-between'
             alignItems='center'
@@ -40,7 +42,7 @@ export const NoteView = () => {
                 />
             </Grid>
 
-            <ImageGallery/>
+            <ImageGallery />
         </Grid>
     )
 }

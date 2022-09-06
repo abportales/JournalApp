@@ -1,7 +1,18 @@
 import { LogoutOutlined, MenuOutlined } from "@mui/icons-material"
 import { AppBar, Grid, IconButton, Toolbar, Typography } from "@mui/material"
+import { useDispatch } from "react-redux"
+import { startLogout } from "../../store/auth/thunks"
 
 export const NavBar = ({ drawerWidth = 240 }) => {
+
+    const dispatch = useDispatch();
+
+    const onLogout = () => {
+        //la haremos en el provider, para no cargar de codigo aqui, aparte es una funcion async.
+        // por ese debe de ir en auth y en thunk.
+        dispatch(startLogout());
+    }
+
     return (
         <AppBar
             position='fixed'
@@ -27,7 +38,10 @@ export const NavBar = ({ drawerWidth = 240 }) => {
                         JournalApp
                     </Typography>
 
-                    <IconButton color='error'>
+                    <IconButton 
+                        color='error'
+                        onClick={onLogout}
+                    >
                         <LogoutOutlined />
                     </IconButton>
 

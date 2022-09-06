@@ -25,7 +25,7 @@ export const authSlice = createSlice({
             state.email = null;
             state.displayName = null;
             state.photoURL = null;
-            state.errorMessage = payload.errorMessage;
+            state.errorMessage = payload?.errorMessage; //se agrega nulabilidad por si no viene el error mesage no haga nada.
         },
         //esta de autentificacion, cuando el usuario inicia sesión no queremos que se puedan hacer algunas cosas
         checkingCredentials: (state) => {

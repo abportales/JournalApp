@@ -8,7 +8,8 @@ const drawerWidth = 280;
 export const JournalLayout = ({ children }) => {
     return (
         // es como un div
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' }}
+            className='animate__animated animate__fadeIn animated__faster'>
 
             <NavBar drawerWidth={drawerWidth} />
 
@@ -18,7 +19,7 @@ export const JournalLayout = ({ children }) => {
                 component='main'
                 sx={{ flexGrow: 1, p: 3 }}
             >
-                <Toolbar/>
+                <Toolbar />
                 {children}
             </Box>
         </Box>

@@ -45,7 +45,8 @@ export const LoginPage = () => {
   return (
 
     <AuthLayout title='Login'>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}
+        className='animate__animated animate__fadeIn animated__faster'>
         {/* grid tambien cuenta con la plantilla de 12 posiciones como bootstrap */}
         <Grid
           container

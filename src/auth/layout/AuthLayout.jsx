@@ -16,11 +16,12 @@ export const AuthLayout = ({ children, title = '' }) => {
                     className="box-shadow"
                     xs={3}
                     // limitamos el width en pantallas >sm a 450
-                    sx={{ 
-                        width:{ sm: 450 }, 
-                        backgroundColor: 'white', 
-                        padding: 3, 
-                        borderRadius: 2 }}
+                    sx={{
+                        width: { sm: 450 },
+                        backgroundColor: 'white',
+                        padding: 3,
+                        borderRadius: 2
+                    }}
                 >
                     <Typography variant="h5" sx={{ mb: 1 }}> {title} </Typography>
 
